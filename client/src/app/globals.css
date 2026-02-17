@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+
+.progress-container {
+  width: 100%;
+  height: 4px;
+  background-color: #f1f1f1;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #db4437; /* Gmail Red */
+  transition: width 0.1s ease-out; /* Smoothly updates as width changes */
+}
+
