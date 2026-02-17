@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { connectDB } from "./config/db";
+import { cors } from "hono/cors";
 
 import mailbox from "./routes/mailbox";
 import email from "./routes/email";
@@ -8,8 +9,10 @@ import incoming from "./routes/incoming";
 
 await connectDB();
 
-const app = new Hono();
+const app = new Hono()
 
+
+app.use("*", cors());
 app.route("/mailbox", mailbox);
 app.route("/emails", email);
 app.route("/incoming", incoming);
