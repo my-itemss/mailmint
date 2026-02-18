@@ -1,5 +1,6 @@
 const BASE = "https://mailmint-8fza.onrender.com";
 
+
 export async function createMailbox(name?: string) {
   const res = await fetch(`${BASE}/mailbox/create`, {
     method: "POST",
