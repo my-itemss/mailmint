@@ -1,4 +1,4 @@
-const BASE = "https://mailmint-8fza.onrender.com";
+const BASE = process.env.NEXT_PUBLIC_BASE_URL;
 
 
 export async function createMailbox(name?: string) {
