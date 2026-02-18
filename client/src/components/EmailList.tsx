@@ -4,7 +4,7 @@ interface Props {
 
 export default function EmailList({ emails }: Props) {
   return (
-    <div className="flex-1 bg-white overflow-y-auto">
+    <div className="flex-1 bg-white rounded-2xl overflow-y-auto">
       {emails.length === 0 && (
         <div className="p-6 text-gray-500">
           No emails yet.

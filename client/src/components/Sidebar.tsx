@@ -7,7 +7,7 @@ interface Props {
 
 export default function Sidebar({ onCompose }: Props) {
   return (
-    <div className="w-64 bg-[#f8fafd] border-r">
+    <div className="w-64 bg-[#f8fafd] ">
       <div>
       <button
         onClick={onCompose}

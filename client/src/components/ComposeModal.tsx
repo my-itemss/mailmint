@@ -47,11 +47,11 @@ export default function ComposeModal({
   };
 
   return (
-    <div className="fixed bottom-0 right-6 w-[500px] bg-white shadow-2xl rounded-t-xl border animate-slideUp">
+    <div className="fixed bottom-0 right-6 w-[500px] bg-white shadow-2xl rounded-t-xl animate-slideUp">
       
       {/* Header */}
-      <div className="flex justify-between p-3 bg-gray-100 rounded-t-xl">
-        <h2 className="font-semibold">New Message</h2>
+      <div className="flex justify-between p-3 bg-gray-100 rounded-t-md">
+        <h2 className="font-semibold bg-[#f2f6fc]">New Message</h2>
         <button onClick={onClose}>✕</button>
       </div>
 
@@ -63,7 +63,7 @@ export default function ComposeModal({
           placeholder="To"
           value={to}
           onChange={(e) => setTo(e.target.value)}
-          className="w-full border-b py-2 outline-none"
+          className="w-full border-b border-gray-200 py-2 outline-none"
         />
 
         <input
@@ -71,7 +71,7 @@ export default function ComposeModal({
           placeholder="Subject"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
-          className="w-full border-b py-2 outline-none"
+          className="w-full border-b border-gray-200 py-2 outline-none"
         />
 
         <textarea
@@ -92,7 +92,7 @@ export default function ComposeModal({
         <button
           onClick={handleSend}
           disabled={loading}
-          className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
+          className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 cursor-pointer transition"
         >
           {loading ? "Sending..." : "Send"}
         </button>
