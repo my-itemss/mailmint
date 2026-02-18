@@ -1,11 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-interface LoaderProps {
+interface Props {
   onFinish: () => void;
 }
 
-export default function Loader({ onFinish }: LoaderProps) {
+export default function Loader({ onFinish }: Props) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -13,32 +13,27 @@ export default function Loader({ onFinish }: LoaderProps) {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
-          setTimeout(() => onFinish(), 400);
+          setTimeout(onFinish, 500);
           return 100;
         }
-
-        let step = Math.random() * 20;
-        if (prev > 70) step = Math.random() * 5;
-        if (prev > 90) step = 1;
-
-        return prev + step;
+        return prev + 8;
       });
-    }, 400);
+    }, 300);
 
     return () => clearInterval(interval);
   }, [onFinish]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
-      <img
-        src="/log/mailmint.png"
-        alt="MailMint"
-        className="w-52 mb-12 opacity-90"
-      />
+     <img 
+     src="/log/mailmint.png"
+     className="w-66 mb-7"
+     >
+     </img>
 
-      <div className="loader-track">
+      <div className="w-72 h-1 bg-gray-200 rounded overflow-hidden">
         <div
-          className="loader-fill"
+          className="h-full bg-red-600 transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
