@@ -1,5 +1,11 @@
 const BASE = process.env.NEXT_PUBLIC_BASE_URL;
 
+type LoginResponse = {
+  success: boolean;
+  email: string;
+  displayName: string;
+};
+
 export async function createMailbox(customEmail: string, password: string, displayName: string) {
   const res = await fetch(`${BASE}/mailbox/create`, {
     method: "POST",
@@ -19,19 +25,28 @@ export async function createMailbox(customEmail: string, password: string, displ
   return res.json();
 }
 
-export async function loginMailbox(email: string, password: string) {
+export async function loginMailbox(
+  email: string,
+  password: string
+): Promise<LoginResponse> {
   const res = await fetch(`${BASE}/mailbox/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
 
+  const data = await res.json();
+
   if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.error || "Login failed");
+    throw new Error(data?.error || "Login failed");
   }
 
-  return res.json();
+  // Extra safety check (this fixes your issue)
+  if (!data.email || !data.displayName) {
+    throw new Error("Invalid login response (missing user data)");
+  }
+
+  return data;
 }
 
 export async function deleteMailbox(email: string, password: string) {

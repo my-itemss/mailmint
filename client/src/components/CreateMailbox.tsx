@@ -4,12 +4,12 @@ import { useState } from "react";
 import { createMailbox } from "../../lib/api";
 
 interface Props {
-  onCreated: (email: string, displayName: string) => void; // Pass displayName back
+  onCreated: (email: string, displayName: string) => void; 
 }
 
 export default function CreateMailbox({ onCreated }: Props) {
   const [displayName, setDisplayName] = useState("");
-  const [customEmail, setCustomEmail] = useState(""); // Optional custom email
+  const [customEmail, setCustomEmail] = useState(""); 
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -27,7 +27,6 @@ export default function CreateMailbox({ onCreated }: Props) {
     try {
       setLoading(true);
       setError("");
-      // Send displayName and optional custom email
       const data = await createMailbox(customEmail.trim(), password, displayName.trim());
       onCreated(data.email, data.displayName); // Pass both to parent
     } catch (err: any) {
@@ -58,7 +57,7 @@ export default function CreateMailbox({ onCreated }: Props) {
           className="flex-1 border p-2 rounded-l"
         />
         <span className="bg-gray-100 border border-l-0 p-2 rounded-r text-gray-600 text-sm flex items-center">
-          @{process.env.NEXT_PUBLIC_MAIL_DOMAIN || "yourdomain.com"}
+          @{process.env.NEXT_PUBLIC_MAIL_DOMAIN || "mailmint.test"}
         </span>
       </div>
 
