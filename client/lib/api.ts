@@ -1,16 +1,52 @@
 const BASE = process.env.NEXT_PUBLIC_BASE_URL;
 
-
-export async function createMailbox(name?: string) {
+export async function createMailbox(customEmail: string, password: string, displayName: string) {
   const res = await fetch(`${BASE}/mailbox/create`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name }),
+    body: JSON.stringify({ 
+      customEmail,
+      password, 
+      displayName
+    }),
   });
 
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error);
-  return data;
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.error || "Failed to create mailbox");
+  }
+
+  return res.json();
+}
+
+export async function loginMailbox(email: string, password: string) {
+  const res = await fetch(`${BASE}/mailbox/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.error || "Login failed");
+  }
+
+  return res.json();
+}
+
+export async function deleteMailbox(email: string, password: string) {
+  const res = await fetch(`${BASE}/mailbox/delete`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.error || "Failed to delete mailbox");
+  }
+
+  return res.json();
 }
 
 export async function getEmails(address: string) {

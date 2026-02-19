@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import bcrypt from "bcrypt";
 import Mailbox from "../models/Mailbox";
 import Email from "../models/Email"; 
 import { generateId } from "../utils/generateId";
@@ -8,45 +9,63 @@ const mailbox = new Hono();
 mailbox.post("/create", async (c) => {
   const body = await c.req.json().catch(() => ({}));
 
-  const name = body.name || generateId();
-  const email = `${name}@${process.env.MAIL_DOMAIN}`;
+  const emailUser = body.customEmail || generateId(8);
+  const email = `${emailUser}@${process.env.MAIL_DOMAIN}`;
   const password = body.password;
+  const displayName = body.displayName;
 
-  if (!password) {
-    return c.json({ error: "Password required" }, 400);
+  if (!emailUser || !password || !displayName) {
+    return c.json({ error: "Name, email and password are required" }, 400);
   }
 
-  // Check if NAME already exists
+  // Check if email username already exists
   const exists = await Mailbox.findOne({ 
-    email: { $regex: new RegExp(`^${name}@`, 'i') }
+    email: { $regex: new RegExp(`^${emailUser}@`, 'i') }
   });
   
-  if (exists)
-    return c.json({ error: "Name already taken" }, 400);
+  if (exists) {
+    return c.json({ error: "Email already taken" }, 400);
+  }
 
-  await Mailbox.create({ email, name, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  return c.json({ email });
+  await Mailbox.create({ 
+    email, 
+    emailUser,
+    displayName,
+    password: hashedPassword
+  });
+
+  return c.json({ email, displayName });
 });
+
 
 mailbox.post("/login", async (c) => {
   const body = await c.req.json().catch(() => ({}));
   
   const { email, password } = body;
-  
+
   if (!email || !password) {
     return c.json({ error: "Email and password required" }, 400);
   }
 
   const mailbox = await Mailbox.findOne({ email });
-  
-  if (!mailbox || mailbox.password !== password) {
+
+  if (!mailbox) {
+    return c.json({ error: "Invalid credentials" }, 401);
+  }
+
+  // Compare hashed password
+  const isMatch = await bcrypt.compare(password, mailbox.password);
+
+  if (!isMatch) {
     return c.json({ error: "Invalid credentials" }, 401);
   }
 
   return c.json({ 
-    success: true, 
-    email: mailbox.email 
+    success: true,
+    email: mailbox.email,
+    displayName: mailbox.displayName
   });
 });
 
