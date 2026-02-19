@@ -26,7 +26,7 @@ export default function Loader({ onFinish }: Props) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
      <img 
-     src="/log/mailmint.png"
+     src="/log/mailmintt.png"
      className="w-66 mb-7"
      >
      </img>

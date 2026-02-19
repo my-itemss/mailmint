@@ -1,12 +1,19 @@
 import { useState, useRef, useEffect } from "react";
+import { IoReorderThreeOutline, IoSearchOutline } from "react-icons/io5";
 
 interface TopbarProps {
   email: string;
-  displayName?: string;  
+  displayName?: string;
   onLogout: () => void;
+  onToggleSidebar: () => void;
 }
 
-export default function Topbar({ email, displayName, onLogout }: TopbarProps) {
+export default function Topbar({
+  email,
+  displayName,
+  onLogout,
+  onToggleSidebar,
+}: TopbarProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -25,27 +32,51 @@ export default function Topbar({ email, displayName, onLogout }: TopbarProps) {
   }, []);
 
   return (
-    <div className="h-16 bg-[#f8fafd] flex items-center justify-between px-6">
-      <h1 className="text-xl font-semibold">Mail</h1>
+    <div className="h-16 bg-[#f6f8fc] flex items-center justify-between px-4 gap-4">
 
-      <div ref={ref} className="relative group">
+      {/* LEFT SECTION */}
+      <div className="flex items-center gap-3 min-w-[220px]">
+
+        <button
+          onClick={onToggleSidebar}
+          className="p-2 hover:bg-gray-200 rounded-full transition"
+        >
+          <IoReorderThreeOutline size={30} />
+        </button>
+
+        <img
+          src="/log/mailmintt.png"
+          className="h-8 object-contain"
+        />
+       <p
+       className="text-lg "
+       >Mailmint</p>
+      </div>
+
+      <div className="flex-1 max-w-[720px]">
+
+        <div className="flex items-center gap-3 bg-[#eaf1fb] px-4 py-3 rounded-full hover:shadow-sm transition">
+
+          <IoSearchOutline size={20} className="text-gray-600" />
+
+          <input
+            type="text"
+            placeholder="Search mail"
+            className="bg-transparent outline-none w-full text-sm"
+          />
+
+        </div>
+
+      </div>
+
+      <div ref={ref} className="relative">
 
         <div
           onClick={() => setOpen(!open)}
-          className="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center cursor-pointer select-none"
+          className="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center cursor-pointer"
         >
           {initial}
         </div>
-
-        {!open && (
-          <div className="absolute right-0 mt-2 hidden group-hover:block z-50">
-            <div className="bg-gray-800 text-white text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap">
-              <p className="font-semibold">MailMint Account</p>
-              <p>{safeName}</p>
-              <p className="text-gray-300">{email}</p>
-            </div>
-          </div>
-        )}
 
         {open && (
           <div className="absolute right-0 mt-3 w-72 bg-white rounded-md shadow-lg p-5">
@@ -56,7 +87,7 @@ export default function Topbar({ email, displayName, onLogout }: TopbarProps) {
               </div>
 
               <h2 className="text-lg font-semibold">
-                Hi, {safeName}!
+                Hi, {safeName}
               </h2>
 
               <p className="text-gray-500 text-sm break-all">
@@ -65,7 +96,7 @@ export default function Topbar({ email, displayName, onLogout }: TopbarProps) {
 
               <button
                 onClick={onLogout}
-                className="mt-3 w-full py-2 rounded-lg border text-red-600 hover:bg-red-50 transition"
+                className="mt-3 w-full py-2 rounded-lg border text-red-600 hover:bg-red-50"
               >
                 Logout
               </button>

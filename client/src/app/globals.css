@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Loader Track */
 .loader-track {
   width: 300px;
   height: 4px;
@@ -15,7 +14,6 @@
   transition: width 0.4s ease;
 }
 
-/* Page animation */
 .page-reveal {
   animation: fadeIn 0.6s ease-in-out;
 }
@@ -38,4 +36,20 @@
 
 .animate-slideUp {
   animation: slideUp 0.3s ease-out;
+}
+
+@font-face {
+  font-family:Robo ;
+  src: url(/client/public/fonts/Roboto-VariableFont_wdth\,wght.ttf);
+}
+.robo{
+  font-family:Robo,sans-serif;
+}
+
+@font-face {
+  font-family:Sans;
+  src: url(/client/public/fonts/Google_Sans/GoogleSans-VariableFont_GRAD\,opsz\,wght.ttf);
+}
+.sans{
+  font-family:Sans,sans-serif;
 }

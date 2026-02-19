@@ -12,21 +12,28 @@ import { getEmails } from "../../lib/api";
 
 export default function Home() {
   const [loadingDone, setLoadingDone] = useState(false);
+
   const [mailbox, setMailbox] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string>("");
+
   const [emails, setEmails] = useState<any[]>([]);
   const [composeOpen, setComposeOpen] = useState(false);
+
   const [authMode, setAuthMode] = useState<"create" | "login">("login");
 
-  // Check saved mailbox and display name
+  // Sidebar collapse state
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  /* ---------------- LOAD SAVED MAILBOX ---------------- */
   useEffect(() => {
     const saved = localStorage.getItem("mailbox");
     const savedName = localStorage.getItem("displayName");
+
     if (saved) setMailbox(saved);
     if (savedName) setDisplayName(savedName);
   }, []);
 
-  // Fetch emails when mailbox exists
+  /* ---------------- FETCH EMAILS ---------------- */
   useEffect(() => {
     if (!mailbox) return;
 
@@ -42,31 +49,36 @@ export default function Home() {
 
   const handleAuthSuccess = (email: string, userDisplayName?: string) => {
     localStorage.setItem("mailbox", email);
+
     if (userDisplayName) {
       localStorage.setItem("displayName", userDisplayName);
       setDisplayName(userDisplayName);
     }
+
     setMailbox(email);
   };
 
   const handleLogout = () => {
     localStorage.removeItem("mailbox");
     localStorage.removeItem("displayName");
+
     setMailbox(null);
     setDisplayName("");
     setAuthMode("login");
   };
 
+  /* ---------------- LOADER ---------------- */
   if (!loadingDone) {
     return <Loader onFinish={() => setLoadingDone(true)} />;
   }
 
-  // Show auth screen if no mailbox
+  /* ---------------- AUTH SCREEN ---------------- */
   if (!mailbox) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="bg-white p-8 rounded-xl shadow-md w-96">
-          {/* Toggle Tabs */}
+
+          {/* Tabs */}
           <div className="flex mb-6 border-b">
             <button
               onClick={() => setAuthMode("login")}
@@ -78,6 +90,7 @@ export default function Home() {
             >
               Login
             </button>
+
             <button
               onClick={() => setAuthMode("create")}
               className={`flex-1 pb-2 text-center font-medium transition ${
@@ -90,7 +103,6 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Show Create or Login based on mode */}
           {authMode === "create" ? (
             <CreateMailbox onCreated={handleAuthSuccess} />
           ) : (
@@ -101,20 +113,39 @@ export default function Home() {
     );
   }
 
-  // Main app view
+  /* ---------------- MAIN APP ---------------- */
   return (
-    <div className="flex h-screen bg-[#f6f8fc]">
-      <Sidebar onCompose={() => setComposeOpen(true)} />
+    <div className="h-screen flex flex-col bg-[#f6f8fc]">
 
-      <div className="flex-1 flex flex-col">
-        <Topbar 
-          email={mailbox} 
-          displayName={displayName}
-          onLogout={handleLogout} 
+      {/* TOPBAR (FULL WIDTH) */}
+      <Topbar
+        email={mailbox}
+        displayName={displayName}
+        onLogout={handleLogout}
+        onToggleSidebar={() =>
+          setSidebarCollapsed(!sidebarCollapsed)
+        }
+      />
+
+      {/* BODY */}
+      <div className="flex flex-1 overflow-hidden">
+
+        {/* SIDEBAR */}
+        <Sidebar
+          collapsed={sidebarCollapsed}
+          onCompose={() => setComposeOpen(true)}
         />
-        <EmailList emails={emails} />
+
+        {/* EMAIL AREA */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+
+          <EmailList emails={emails} />
+
+        </div>
+
       </div>
 
+      {/* COMPOSE MODAL */}
       {composeOpen && (
         <ComposeModal
           from={mailbox}

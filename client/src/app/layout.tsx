@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/log/mailmint.svg",
-        href: "/log/mailmint.svg",
+        url: "/log/logo.svg",
+        href: "/log/logo.svg",
       },
     ],
   },
