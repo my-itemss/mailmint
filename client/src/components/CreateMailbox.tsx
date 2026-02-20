@@ -29,7 +29,6 @@ function FloatingInput({
 
   return (
     <div className={`relative ${className}`}>
-      {/* Floating Label */}
       <label
         className={`
           absolute left-3 transition-all duration-200 pointer-events-none
@@ -117,13 +116,13 @@ export default function CreateMailbox({ onCreated }: Props) {
             type="text"
             value={customEmail}
             onChange={setCustomEmail}
-            label="Custom email (optional)"
+            label="Custom email"
             rounded="rounded-l-lg"
             className="h-full"
           />
         </div>
         <span className="bg-blue-100 border border-l-0 border-blue-300 px-3 flex items-center rounded-r-lg text-gray-600 text-sm pt-3">
-          @{process.env.NEXT_PUBLIC_MAIL_DOMAIN || "mailmint.test"}
+          @{process.env.NEXT_PUBLIC_MAIL_DOMAIN || "mailmint.com"}
         </span>
       </div>
 

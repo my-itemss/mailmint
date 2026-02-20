@@ -49,13 +49,11 @@ export default function ComposeModal({
   return (
     <div className="fixed bottom-0 right-6 w-[500px] bg-white shadow-2xl rounded-t-xl animate-slideUp">
       
-      {/* Header */}
       <div className="flex justify-between p-3 bg-gray-100 rounded-t-md">
         <h2 className="font-semibold bg-[#f2f6fc]">New Message</h2>
         <button onClick={onClose}>✕</button>
       </div>
 
-      {/* Body */}
       <div className="p-4 space-y-3">
         
         <input
@@ -87,7 +85,6 @@ export default function ComposeModal({
         )}
       </div>
 
-      {/* Footer */}
       <div className="p-3">
         <button
           onClick={handleSend}

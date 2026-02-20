@@ -6,10 +6,7 @@ const email = new Hono();
 /* GET inbox */
 email.get("/:address", async (c) => {
   try {
-    // 1. Get address from params (Hono automatically decodes %40 back to @)
     const address = c.req.param("address");
-
-    // 2. Use a case-insensitive regex for the search
     const emails = await Email.find({ 
       to: { $regex: new RegExp(`^${address}$`, 'i') } 
     }).sort({ createdAt: -1 });
@@ -22,7 +19,6 @@ email.get("/:address", async (c) => {
 });
 
 
-/* SEND EMAIL */
 email.post("/send", async (c) => {
   try {
     const body = await c.req.json();
@@ -41,7 +37,6 @@ email.post("/send", async (c) => {
 });
 
 
-/* TOGGLE STAR */
 email.patch("/star/:id", async (c) => {
   try {
     const id = c.req.param("id");
@@ -59,7 +54,6 @@ email.patch("/star/:id", async (c) => {
 });
 
 
-/* MARK AS READ */
 email.patch("/read/:id", async (c) => {
   try {
     const id = c.req.param("id");
@@ -77,7 +71,6 @@ email.patch("/read/:id", async (c) => {
 });
 
 
-/* DELETE EMAIL */
 email.delete("/:id", async (c) => {
   try {
     const id = c.req.param("id");
