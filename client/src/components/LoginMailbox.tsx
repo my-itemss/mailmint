@@ -7,6 +7,52 @@ interface Props {
   onLogin: (email: string, displayName: string) => void;
 }
 
+// Reusable Floating Label Input Component
+interface FloatingInputProps {
+  type: string;
+  value: string;
+  onChange: (value: string) => void;
+  label: string;
+}
+
+function FloatingInput({ type, value, onChange, label }: FloatingInputProps) {
+  const [isFocused, setIsFocused] = useState(false);
+  const isActive = isFocused || value.length > 0;
+
+  return (
+    <div className="relative mb-4">
+      {/* Floating Label */}
+      <label
+        className={`
+          absolute left-4 transition-all duration-200 pointer-events-none
+          ${isActive 
+            ? 'top-1 text-xs text-[#1877f2]' 
+            : 'top-1/2 -translate-y-1/2 text-base text-gray-500'
+          }
+        `}
+      >
+        {label}
+      </label>
+
+      {/* Input Field */}
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        className={`
+          w-full border rounded-lg px-4 pt-5 pb-2 outline-none transition-all duration-200
+          ${isActive 
+            ? 'border-[#1877f2] ring-1 ring-[#1877f2]' 
+            : 'border-gray-300'
+          }
+        `}
+      />
+    </div>
+  );
+}
+
 export default function LoginMailbox({ onLogin }: Props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,8 +70,6 @@ export default function LoginMailbox({ onLogin }: Props) {
       setError("");
 
       const data = await loginMailbox(email, password);
-
-      // IMPORTANT FIX
       onLogin(data.email, data.displayName);
 
     } catch (err: any) {
@@ -37,33 +81,41 @@ export default function LoginMailbox({ onLogin }: Props) {
 
   return (
     <div className="text-center">
-      <h2 className="text-2xl font-bold mb-6 text-blue-600">Login</h2>
-
-      <input
+     
+      <FloatingInput
         type="email"
-        placeholder="Enter your email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="w-full border p-2 rounded mb-4"
+        onChange={setEmail}
+        label="Email address"
       />
 
-      <input
+      <FloatingInput
         type="password"
-        placeholder="Enter password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="w-full border p-2 rounded mb-4"
+        onChange={setPassword}
+        label="Password"
       />
 
+ {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+          {error}
+        </div>
+      )}
       <button
         onClick={handleLogin}
         disabled={loading}
-        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+        className={`
+          w-full py-3 rounded-lg font-semibold text-lg transition-all duration-200
+          ${loading 
+            ? 'bg-gray-400 cursor-not-allowed' 
+            : 'bg-[#1877f2] hover:bg-blue-700 cursor-pointer'
+          }
+          text-white
+        `}
       >
-        {loading ? "Logging in..." : "Login"}
+        {loading ? 'Logging in...' : 'Log in'}
       </button>
-
-      {error && <p className="text-red-500 text-sm mt-3">{error}</p>}
+      
     </div>
   );
 }

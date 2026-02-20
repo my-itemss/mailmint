@@ -7,6 +7,60 @@ interface Props {
   onCreated: (email: string, displayName: string) => void; 
 }
 
+interface FloatingInputProps {
+  type: string;
+  value: string;
+  onChange: (value: string) => void;
+  label: string;
+  className?: string;
+  rounded?: string;
+}
+
+function FloatingInput({ 
+  type, 
+  value, 
+  onChange, 
+  label, 
+  className = "",
+  rounded = "rounded-lg" 
+}: FloatingInputProps) {
+  const [isFocused, setIsFocused] = useState(false);
+  const isActive = isFocused || value.length > 0;
+
+  return (
+    <div className={`relative ${className}`}>
+      {/* Floating Label */}
+      <label
+        className={`
+          absolute left-3 transition-all duration-200 pointer-events-none
+          ${isActive 
+            ? 'top-1 text-xs text-blue-600' 
+            : 'top-1/2 -translate-y-1/2 text-base text-gray-500'
+          }
+        `}
+      >
+        {label}
+      </label>
+
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        className={`
+          w-full border px-3 pt-5 pb-2 outline-none transition-all duration-200
+          ${rounded}
+          ${isActive 
+            ? 'border-blue-500 ring-2 ring-blue-500' 
+            : 'border-gray-300'
+          }
+        `}
+      />
+    </div>
+  );
+}
+
 export default function CreateMailbox({ onCreated }: Props) {
   const [displayName, setDisplayName] = useState("");
   const [customEmail, setCustomEmail] = useState(""); 
@@ -28,7 +82,7 @@ export default function CreateMailbox({ onCreated }: Props) {
       setLoading(true);
       setError("");
       const data = await createMailbox(customEmail.trim(), password, displayName.trim());
-      onCreated(data.email, data.displayName); // Pass both to parent
+      onCreated(data.email, data.displayName);
     } catch (err: any) {
       setError(err.message || "Failed to create mailbox");
     } finally {
@@ -37,51 +91,64 @@ export default function CreateMailbox({ onCreated }: Props) {
   };
 
   return (
-    <div className="text-center">
-      <h2 className="text-2xl font-bold mb-6 text-red-600">Create Mailbox</h2>
+    <div>
+      <h2 className="text-xl font-bold mb-4 text-center text-gray-800">
+        Create your mailbox
+      </h2>
 
-      <input
+      {/* Error Message */}
+      {error && (
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 text-blue-600 rounded-lg text-sm text-center">
+          {error}
+        </div>
+      )}
+
+      <FloatingInput
         type="text"
-        placeholder="Your Name (e.g. John Doe)"
         value={displayName}
-        onChange={(e) => setDisplayName(e.target.value)}
-        className="w-full border p-2 rounded mb-4"
+        onChange={setDisplayName}
+        label="Full name"
+        className="mb-3"
       />
 
-      <div className="flex mb-4">
-        <input
-          type="text"
-          placeholder="Custom email (optional)"
-          value={customEmail}
-          onChange={(e) => setCustomEmail(e.target.value)}
-          className="flex-1 border p-2 rounded-l"
-        />
-        <span className="bg-gray-100 border border-l-0 p-2 rounded-r text-gray-600 text-sm flex items-center">
+      <div className="flex mb-3">
+        <div className="flex-1 relative">
+          <FloatingInput
+            type="text"
+            value={customEmail}
+            onChange={setCustomEmail}
+            label="Custom email (optional)"
+            rounded="rounded-l-lg"
+            className="h-full"
+          />
+        </div>
+        <span className="bg-blue-100 border border-l-0 border-blue-300 px-3 flex items-center rounded-r-lg text-gray-600 text-sm pt-3">
           @{process.env.NEXT_PUBLIC_MAIL_DOMAIN || "mailmint.test"}
         </span>
       </div>
 
-      <p className="text-xs text-gray-500 mb-4">
-        Leave empty for random email
-      </p>
-
-      <input
+      <FloatingInput
         type="password"
-        placeholder="Set password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="w-full border p-2 rounded mb-4"
+        onChange={setPassword}
+        label="Password"
+        className="mb-4"
       />
 
       <button
         onClick={handleCreate}
         disabled={loading}
-        className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition"
+        className={`
+          w-full py-3 rounded-lg font-semibold transition-all duration-200
+          ${loading 
+            ? 'bg-gray-400 cursor-not-allowed' 
+            : 'bg-green-600 hover:bg-green-700 cursor-pointer'
+          }
+          text-white
+        `}
       >
-        {loading ? "Creating..." : "Create Email"}
+        {loading ? "Creating..." : "Create Account"}
       </button>
-
-      {error && <p className="text-red-500 text-sm mt-3">{error}</p>}
     </div>
   );
 }
