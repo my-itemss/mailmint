@@ -4,12 +4,14 @@ import { useState } from "react";
 import EmailRow from "./EmailRow";
 import EmailViewer from "./EmailViewer";
 
-interface Email {
+export interface Email {
   _id: string;
   from: string;
   subject: string;
   body: string;
-  date?: string;
+  createdAt: string;
+  starred: boolean;
+  read: boolean;
 }
 
 interface Props {
@@ -22,10 +24,8 @@ export default function EmailList({ emails }: Props) {
   return (
     <div className="flex-1 overflow-hidden">
 
-      {/* Outer container (gmail style rounded only left) */}
       <div className="h-full bg-white rounded-l-2xl overflow-hidden flex flex-col">
 
-        {/* If email opened */}
         {selected ? (
           <EmailViewer
             email={selected}
@@ -34,18 +34,18 @@ export default function EmailList({ emails }: Props) {
         ) : (
           <>
             {/* Toolbar */}
-            <div className="px-6 py-3 bg-gray-50 text-sm text-gray-500">
+            <div className="px-6 py-3 robo border-b border-gray-200 bg-white text-lg text-gray-500">
               Inbox
             </div>
 
-            {/* Empty state */}
+            {/* Empty */}
             {emails.length === 0 && (
               <div className="flex-1 flex items-center justify-center text-gray-400">
-                No emails yet.
+                No emails yet
               </div>
             )}
 
-            {/* Email rows */}
+            {/* List */}
             <div className="overflow-y-auto flex-1">
               {emails.map((email) => (
                 <EmailRow
@@ -58,7 +58,6 @@ export default function EmailList({ emails }: Props) {
           </>
         )}
       </div>
-
     </div>
   );
 }

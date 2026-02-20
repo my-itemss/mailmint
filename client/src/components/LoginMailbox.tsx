@@ -4,7 +4,7 @@ import { useState } from "react";
 import { loginMailbox } from "../../lib/api";
 
 interface Props {
-  onLogin: (email: string) => void;
+  onLogin: (email: string, displayName: string) => void;
 }
 
 export default function LoginMailbox({ onLogin }: Props) {
@@ -22,8 +22,12 @@ export default function LoginMailbox({ onLogin }: Props) {
     try {
       setLoading(true);
       setError("");
+
       const data = await loginMailbox(email, password);
-      onLogin(data.email);
+
+      // IMPORTANT FIX
+      onLogin(data.email, data.displayName);
+
     } catch (err: any) {
       setError(err.message || "Invalid credentials");
     } finally {

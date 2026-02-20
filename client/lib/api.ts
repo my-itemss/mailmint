@@ -78,3 +78,15 @@ export async function sendEmail(payload: any) {
 
   return res.json();
 }
+
+export async function deleteWholeUser(email: string, password: string) {
+  const res = await fetch(`${BASE}/mailbox/delete`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Failed to delete user account");
+  return data; 
+}

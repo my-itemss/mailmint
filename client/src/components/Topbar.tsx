@@ -17,8 +17,9 @@ export default function Topbar({
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const safeName = displayName || email?.split("@")[0] || "U";
-  const initial = safeName.charAt(0).toUpperCase();
+  // Direct display name usage
+  const name = displayName || email?.split("@")[0] || "U";;
+  const initial = name.charAt(0).toUpperCase();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -34,29 +35,28 @@ export default function Topbar({
   return (
     <div className="h-16 bg-[#f6f8fc] flex items-center justify-between px-4 gap-4">
 
-      {/* LEFT SECTION */}
+      {/* LEFT */}
       <div className="flex items-center gap-3 min-w-[220px]">
-
         <button
           onClick={onToggleSidebar}
           className="p-2 hover:bg-gray-200 rounded-full transition"
         >
-          <IoReorderThreeOutline size={30} />
+          <IoReorderThreeOutline size={36} />
         </button>
 
         <img
           src="/log/mailmintt.png"
-          className="h-8 object-contain"
+          className="h-10 object-contain"
         />
-       <p
-       className="text-lg "
-       >Mailmint</p>
+
+        <p className="text-xl font-semibold">
+          Mailmint
+        </p>
       </div>
 
+      {/* SEARCH */}
       <div className="flex-1 max-w-[720px]">
-
         <div className="flex items-center gap-3 bg-[#eaf1fb] px-4 py-3 rounded-full hover:shadow-sm transition">
-
           <IoSearchOutline size={20} className="text-gray-600" />
 
           <input
@@ -64,20 +64,23 @@ export default function Topbar({
             placeholder="Search mail"
             className="bg-transparent outline-none w-full text-sm"
           />
-
         </div>
-
       </div>
 
+      {/* PROFILE */}
       <div ref={ref} className="relative">
 
+        {/* Avatar + Name */}
         <div
           onClick={() => setOpen(!open)}
-          className="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center cursor-pointer"
+          className="flex items-center gap-2 cursor-pointer"
         >
-          {initial}
+          <div className="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center">
+            {initial}
+          </div>
         </div>
 
+        {/* DROPDOWN */}
         {open && (
           <div className="absolute right-0 mt-3 w-72 bg-white rounded-md shadow-lg p-5">
             <div className="flex flex-col items-center gap-3">
@@ -87,7 +90,7 @@ export default function Topbar({
               </div>
 
               <h2 className="text-lg font-semibold">
-                Hi, {safeName}
+                Hi, {name}
               </h2>
 
               <p className="text-gray-500 text-sm break-all">
@@ -104,6 +107,7 @@ export default function Topbar({
             </div>
           </div>
         )}
+
       </div>
     </div>
   );

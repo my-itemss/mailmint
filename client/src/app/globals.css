@@ -48,7 +48,7 @@
 
 @font-face {
   font-family:Sans;
-  src: url(/client/public/fonts/Google_Sans/GoogleSans-VariableFont_GRAD\,opsz\,wght.ttf);
+  src: url(/client/public/fonts/Google_Sans/GoogleSans-Italic-VariableFont_GRAD\,opsz\,wght.ttf);
 }
 .sans{
   font-family:Sans,sans-serif;

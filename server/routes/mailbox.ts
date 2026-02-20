@@ -18,7 +18,6 @@ mailbox.post("/create", async (c) => {
     return c.json({ error: "Name, email and password are required" }, 400);
   }
 
-  // Check if email username already exists
   const exists = await Mailbox.findOne({ 
     email: { $regex: new RegExp(`^${emailUser}@`, 'i') }
   });
@@ -55,7 +54,6 @@ mailbox.post("/login", async (c) => {
     return c.json({ error: "Invalid credentials" }, 401);
   }
 
-  // Compare hashed password
   const isMatch = await bcrypt.compare(password, mailbox.password);
 
   if (!isMatch) {
@@ -79,7 +77,6 @@ mailbox.delete("/delete", async (c) => {
 
   const mailboxDoc = await Mailbox.findOne({ email });
   
-  // FIX: Use bcrypt.compare instead of direct equality
   if (!mailboxDoc || !(await bcrypt.compare(password, mailboxDoc.password))) {
     return c.json({ error: "Invalid credentials" }, 401);
   }
