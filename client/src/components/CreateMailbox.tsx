@@ -4,7 +4,7 @@ import { useState } from "react";
 import { createMailbox } from "../../lib/api";
 
 interface Props {
-  onCreated: (email: string, displayName: string) => void; 
+  onCreated: (email: string, displayName: string) => void;
 }
 
 interface FloatingInputProps {
@@ -16,13 +16,13 @@ interface FloatingInputProps {
   rounded?: string;
 }
 
-function FloatingInput({ 
-  type, 
-  value, 
-  onChange, 
-  label, 
+function FloatingInput({
+  type,
+  value,
+  onChange,
+  label,
   className = "",
-  rounded = "rounded-lg" 
+  rounded = "rounded-lg",
 }: FloatingInputProps) {
   const [isFocused, setIsFocused] = useState(false);
   const isActive = isFocused || value.length > 0;
@@ -32,9 +32,10 @@ function FloatingInput({
       <label
         className={`
           absolute left-3 transition-all duration-200 pointer-events-none
-          ${isActive 
-            ? 'top-1 text-xs text-blue-600' 
-            : 'top-1/2 -translate-y-1/2 text-base text-gray-500'
+          ${
+            isActive
+              ? "top-1 text-xs text-blue-600"
+              : "top-1/2 -translate-y-1/2 text-base text-gray-500"
           }
         `}
       >
@@ -50,9 +51,10 @@ function FloatingInput({
         className={`
           w-full border px-3 pt-5 pb-2 outline-none transition-all duration-200
           ${rounded}
-          ${isActive 
-            ? 'border-blue-500 ring-2 ring-blue-500' 
-            : 'border-gray-300'
+          ${
+            isActive
+              ? "border-blue-500 ring-2 ring-blue-500"
+              : "border-gray-300"
           }
         `}
       />
@@ -62,7 +64,7 @@ function FloatingInput({
 
 export default function CreateMailbox({ onCreated }: Props) {
   const [displayName, setDisplayName] = useState("");
-  const [customEmail, setCustomEmail] = useState(""); 
+  const [customEmail, setCustomEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -80,7 +82,11 @@ export default function CreateMailbox({ onCreated }: Props) {
     try {
       setLoading(true);
       setError("");
-      const data = await createMailbox(customEmail.trim(), password, displayName.trim());
+      const data = await createMailbox(
+        customEmail.trim(),
+        password,
+        displayName.trim(),
+      );
       onCreated(data.email, data.displayName);
     } catch (err: any) {
       setError(err.message || "Failed to create mailbox");
@@ -91,37 +97,31 @@ export default function CreateMailbox({ onCreated }: Props) {
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4 text-center text-gray-800">
+      <h2 className="text-lg font-medium mb-6 text-gray-800">
         Create your mailbox
       </h2>
 
-      {/* Error Message */}
-      {error && (
-        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 text-blue-600 rounded-lg text-sm text-center">
-          {error}
-        </div>
-      )}
+      {error && <div className="mb-4 text-sm text-red-600">{error}</div>}
 
       <FloatingInput
         type="text"
         value={displayName}
         onChange={setDisplayName}
         label="Full name"
-        className="mb-3"
+        className="mb-4"
       />
 
-      <div className="flex mb-3">
-        <div className="flex-1 relative">
-          <FloatingInput
-            type="text"
-            value={customEmail}
-            onChange={setCustomEmail}
-            label="Custom email"
-            rounded="rounded-l-lg"
-            className="h-full"
-          />
-        </div>
-        <span className="bg-blue-100 border border-l-0 border-blue-300 px-3 flex items-center rounded-r-lg text-gray-600 text-sm pt-3">
+      <div className="flex mb-4">
+        <FloatingInput
+          type="text"
+          value={customEmail}
+          onChange={setCustomEmail}
+          label="Custom email"
+          rounded="rounded-l-lg"
+          className="flex-1"
+        />
+
+        <span className="border border-l-0 border-gray-300 px-3 flex items-center rounded-r-lg text-gray-600 text-sm">
           @{process.env.NEXT_PUBLIC_MAIL_DOMAIN || "mailmint.com"}
         </span>
       </div>
@@ -131,20 +131,19 @@ export default function CreateMailbox({ onCreated }: Props) {
         value={password}
         onChange={setPassword}
         label="Password"
-        className="mb-4"
+        className="mb-6"
       />
 
       <button
         onClick={handleCreate}
         disabled={loading}
-        className={`
-          w-full py-3 rounded-lg font-semibold transition-all duration-200
-          ${loading 
-            ? 'bg-gray-400 cursor-not-allowed' 
-            : 'bg-green-600 hover:bg-green-700 cursor-pointer'
-          }
-          text-white
-        `}
+        className={`w-full h-11 rounded-lg font-medium transition 
+      ${
+        loading
+          ? "bg-gray-300 cursor-not-allowed"
+          : "bg-blue-600 hover:bg-blue-700"
+      }
+      text-white`}
       >
         {loading ? "Creating..." : "Create Account"}
       </button>

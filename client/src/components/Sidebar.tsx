@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { BiSend } from "react-icons/bi";
-import { BiPencil } from "react-icons/bi";
+import { BiSend, BiPencil } from "react-icons/bi";
 import {
   IoStarOutline,
   IoTimeOutline,
@@ -12,11 +10,11 @@ import { MdInbox, MdOutlineShoppingBag } from "react-icons/md";
 interface SidebarProps {
   onCompose: () => void;
   collapsed: boolean;
+  activeItem: string; 
+  setActiveItem: (name: string) => void; 
 }
 
-export default function Sidebar({ onCompose, collapsed }: SidebarProps) {
-  const [activeItem, setActiveItem] = useState("Inbox");
-
+export default function Sidebar({ onCompose, collapsed, activeItem, setActiveItem }: SidebarProps) {
   const menuItems = [
     { name: "Inbox", icon: <MdInbox size={20} /> },
     { name: "Starred", icon: <IoStarOutline size={20} /> },
@@ -28,13 +26,8 @@ export default function Sidebar({ onCompose, collapsed }: SidebarProps) {
   ];
 
   return (
-    <div
-      className={`
-        ${collapsed ? "w-[72px]" : "w-[256px]"}
-        bg-[#f6f8fc] h-full pt-2 transition-all duration-300
-      `}
-    >
-      {/* Compose */}
+    <div className={`${collapsed ? "w-[72px]" : "w-[256px]"} bg-[#f6f8fc] h-full pt-2 transition-all duration-300`}>
+      {/* Compose Button */}
       <div className="px-2 mb-4">
         <button
           onClick={onCompose}
@@ -45,24 +38,20 @@ export default function Sidebar({ onCompose, collapsed }: SidebarProps) {
         </button>
       </div>
 
-      {/* Menu */}
       <nav className="flex-1 pr-2">
         {menuItems.map((item) => {
           const isActive = activeItem === item.name;
-
           return (
             <div
               key={item.name}
               onClick={() => setActiveItem(item.name)}
               className={`
                 flex items-center gap-4 px-4 py-2 cursor-pointer rounded-r-full
-                ${isActive ? "bg-[#d3e3fd]" : "hover:bg-[#eaebef]"}
+                ${isActive ? "bg-[#d3e3fd] text-[#041e49] font-semibold" : "hover:bg-[#eaebef] text-gray-700"}
               `}
             >
               {item.icon}
-              {!collapsed && (
-                <span className="text-sm">{item.name}</span>
-              )}
+              {!collapsed && <span className="text-sm">{item.name}</span>}
             </div>
           );
         })}

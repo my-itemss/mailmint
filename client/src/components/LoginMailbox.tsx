@@ -25,9 +25,10 @@ function FloatingInput({ type, value, onChange, label }: FloatingInputProps) {
       <label
         className={`
           absolute left-4 transition-all duration-200 pointer-events-none
-          ${isActive 
-            ? 'top-1 text-xs text-[#1877f2]' 
-            : 'top-1/2 -translate-y-1/2 text-base text-gray-500'
+          ${
+            isActive
+              ? "top-1 text-xs text-[#1877f2]"
+              : "top-1/2 -translate-y-1/2 text-base text-gray-500"
           }
         `}
       >
@@ -43,9 +44,10 @@ function FloatingInput({ type, value, onChange, label }: FloatingInputProps) {
         onBlur={() => setIsFocused(false)}
         className={`
           w-full border rounded-lg px-4 pt-5 pb-2 outline-none transition-all duration-200
-          ${isActive 
-            ? 'border-[#1877f2] ring-1 ring-[#1877f2]' 
-            : 'border-gray-300'
+          ${
+            isActive
+              ? "border-[#1877f2] ring-1 ring-[#1877f2]"
+              : "border-gray-300"
           }
         `}
       />
@@ -71,7 +73,6 @@ export default function LoginMailbox({ onLogin }: Props) {
 
       const data = await loginMailbox(email, password);
       onLogin(data.email, data.displayName);
-
     } catch (err: any) {
       setError(err.message || "Invalid credentials");
     } finally {
@@ -80,13 +81,12 @@ export default function LoginMailbox({ onLogin }: Props) {
   };
 
   return (
-    <div className="text-center">
-     
+    <div className="space-y-4">
       <FloatingInput
         type="email"
         value={email}
         onChange={setEmail}
-        label="Email address"
+        label="Email or phone"
       />
 
       <FloatingInput
@@ -96,26 +96,21 @@ export default function LoginMailbox({ onLogin }: Props) {
         label="Password"
       />
 
- {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
-          {error}
-        </div>
-      )}
+      {error && <div className="text-sm text-red-600">{error}</div>}
+
       <button
         onClick={handleLogin}
         disabled={loading}
-        className={`
-          w-full py-3 rounded-lg font-semibold text-lg transition-all duration-200
-          ${loading 
-            ? 'bg-gray-400 cursor-not-allowed' 
-            : 'bg-[#1877f2] hover:bg-blue-700 cursor-pointer'
-          }
-          text-white
-        `}
+        className={`w-full h-11 rounded-lg font-medium transition
+      ${
+        loading
+          ? "bg-gray-300 cursor-not-allowed"
+          : "bg-blue-600 hover:bg-blue-700"
+      }
+      text-white`}
       >
-        {loading ? 'Logging in...' : 'Log in'}
+        {loading ? "Logging in..." : "Log in"}
       </button>
-      
     </div>
   );
 }

@@ -40,9 +40,11 @@ export default function EmailList({ emails }: Props) {
 
             {/* Empty */}
             {emails.length === 0 && (
-              <div className="flex-1 flex items-center justify-center text-gray-400">
-                No emails yet
-              </div>
+              <div className="flex flex-col items-center justify-center h-full text-gray-400">
+              <div className="text-6xl mb-4 opacity-20">📁</div>
+              <h2 className="text-xl font-medium">Inbox folder is empty</h2>
+              <p className="text-sm">There are no messages in this category yet.</p>
+            </div>
             )}
 
             {/* List */}

@@ -9,11 +9,7 @@ interface Props {
   onSent?: () => void;
 }
 
-export default function ComposeModal({
-  from,
-  onClose,
-  onSent,
-}: Props) {
+export default function ComposeModal({ from, onClose, onSent }: Props) {
   const [to, setTo] = useState("");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -48,14 +44,12 @@ export default function ComposeModal({
 
   return (
     <div className="fixed bottom-0 right-6 w-[500px] bg-white shadow-2xl rounded-t-xl animate-slideUp">
-      
       <div className="flex justify-between p-3 bg-gray-100 rounded-t-md">
         <h2 className="font-semibold bg-[#f2f6fc]">New Message</h2>
         <button onClick={onClose}>✕</button>
       </div>
 
       <div className="p-4 space-y-3">
-        
         <input
           type="email"
           placeholder="To"
@@ -80,9 +74,7 @@ export default function ComposeModal({
           className="w-full outline-none resize-none"
         />
 
-        {error && (
-          <p className="text-red-500 text-sm">{error}</p>
-        )}
+        {error && <p className="text-red-500 text-sm">{error}</p>}
       </div>
 
       <div className="p-3">
