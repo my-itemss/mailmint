@@ -67,24 +67,63 @@ mailbox.post("/login", async (c) => {
   });
 });
 
-mailbox.delete("/delete", async (c) => {
+// mailbox.delete("/delete", async (c) => {
+//   const body = await c.req.json().catch(() => ({}));
+//   const { email, password } = body;
+  
+//   if (!email || !password) {
+//     return c.json({ error: "Email and password required" }, 400);
+//   }
+
+//   const mailboxDoc = await Mailbox.findOne({ email });
+  
+//   if (!mailboxDoc || !(await bcrypt.compare(password, mailboxDoc.password))) {
+//     return c.json({ error: "Invalid credentials" }, 401);
+//   }
+
+//   await Email.deleteMany({ to: email });
+//   await Mailbox.deleteOne({ email });
+
+//   return c.json({ success: true, message: "Mailbox and all emails deleted" });
+// });
+
+
+mailbox.delete("/delete-email", async (c) => {
   const body = await c.req.json().catch(() => ({}));
-  const { email, password } = body;
-  
-  if (!email || !password) {
-    return c.json({ error: "Email and password required" }, 400);
+  const { emailId, userEmail } = body;
+
+  if (!emailId || !userEmail) {
+    return c.json({ error: "Missing fields" }, 400);
   }
 
-  const mailboxDoc = await Mailbox.findOne({ email });
-  
-  if (!mailboxDoc || !(await bcrypt.compare(password, mailboxDoc.password))) {
-    return c.json({ error: "Invalid credentials" }, 401);
+  const mail = await Email.findById(emailId);
+
+  if (!mail) {
+    return c.json({ error: "Mail not found" }, 404);
   }
 
-  await Email.deleteMany({ to: email });
-  await Mailbox.deleteOne({ email });
+  /* ---------- RECEIVER DELETE ---------- */
+  if (mail.to === userEmail) {
+    mail.deletedByReceiver = true;
+  }
 
-  return c.json({ success: true, message: "Mailbox and all emails deleted" });
+  /* ---------- SENDER DELETE ---------- */
+  if (mail.from === userEmail) {
+    mail.deletedBySender = true;
+  }
+
+  /* ---------- BOTH DELETED → PERMANENT DELETE ---------- */
+  if (mail.deletedByReceiver && mail.deletedBySender) {
+    await Email.findByIdAndDelete(emailId);
+    return c.json({ success: true, message: "Mail permanently deleted" });
+  }
+
+  await mail.save();
+
+  return c.json({
+    success: true,
+    message: "Mail deleted for this user only",
+  });
 });
 
 export default mailbox;

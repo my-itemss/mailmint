@@ -177,12 +177,23 @@ export default function Home() {
 
           {/* Inbox */}
           {activeTab === "Inbox" && (
-            <EmailList emails={emails} />
-          )}
+<EmailList
+  emails={emails}
+  mailbox={mailbox}
+  onDeleted={(id) =>
+    setEmails((prev) => prev.filter((m) => m._id !== id))
+  }
+/>          )}
 
           {/* Sent */}
           {activeTab === "Sent" && (
-            <SentEmailList emails={sentEmails} />
+           <SentEmailList
+  emails={sentEmails}
+  mailbox={mailbox}
+  onDeleted={(id) =>
+    setSentEmails((prev) => prev.filter((m) => m._id !== id))
+  }
+/>
           )}
 
           {/* Empty other tabs */}

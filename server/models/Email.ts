@@ -6,7 +6,7 @@ const emailSchema = new mongoose.Schema(
     from: String,
     subject: String,
     body: String,
-
+    
     deletedBySender: {
       type: Boolean,
       default: false,
@@ -16,7 +16,6 @@ const emailSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-
     starred: {
       type: Boolean,
       default: false,

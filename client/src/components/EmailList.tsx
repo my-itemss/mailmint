@@ -16,9 +16,11 @@ export interface Email {
 
 interface Props {
   emails: Email[];
+   mailbox: string;
+    onDeleted: (id: string) => void;
 }
 
-export default function EmailList({ emails }: Props) {
+export default function EmailList({ emails , mailbox , onDeleted }: Props) {
   const [selected, setSelected] = useState<Email | null>(null);
 
   return (
@@ -49,13 +51,37 @@ export default function EmailList({ emails }: Props) {
 
             {/* List */}
             <div className="overflow-y-auto flex-1">
-              {emails.map((email) => (
+              {/* {emails.map((email) => (
                 <EmailRow
                   key={email._id}
+                  userEmail={mailbox} 
                   email={email}
                   onClick={() => setSelected(email)}
                 />
-              ))}
+              ))} */}
+
+              {/* {emails.map((email) => (
+  <EmailRow
+    key={email._id}
+    email={email}
+    onClick={() => setSelected(email)}
+    userEmail={mailbox}
+    onDeleted={(id) =>
+      setEmails((prev) => prev.filter((m) => m._id !== id))
+    }
+  />
+))} */}
+
+{emails.map((email) => (
+  <EmailRow
+    key={email._id}
+    email={email}
+    userEmail={mailbox}
+    onDeleted={onDeleted}
+    onClick={() => setSelected(email)}
+  />
+))}
+
             </div>
           </>
         )}

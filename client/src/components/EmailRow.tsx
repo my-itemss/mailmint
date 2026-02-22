@@ -1,42 +1,40 @@
 "use client";
 
-import { FaStar } from "react-icons/fa";
-import { MdDelete, MdArchive, MdMarkEmailRead } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { Email } from "./EmailList";
+import { deleteEmail } from "../../lib/api";
 
 interface Props {
   email: Email;
   onClick: () => void;
+  userEmail: string;                       // ADD
+  onDeleted: (id: string) => void;         // ADD (remove from UI)
 }
 
-export default function EmailRow({ email, onClick }: Props) {
+export default function EmailRow({ email, onClick, userEmail, onDeleted }: Props) {
 
   const date = new Date(email.createdAt).toLocaleDateString();
+
+ 
+ const handleDelete = async (e: React.MouseEvent) => {
+  e.stopPropagation();
+
+  try {
+    await deleteEmail(email._id, userEmail);
+    onDeleted(email._id);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   return (
     <div
       onClick={onClick}
       className="
         group flex items-center px-4 py-3
-       hover:bg-gray-100 cursor-pointer bg-[#f2f6fc] 
+        hover:bg-gray-100 cursor-pointer bg-[#f2f6fc]
       "
     >
-      {/* checkbox */}
-      {/* <input
-        type="checkbox"
-        className="mr-4"
-        onClick={(e) => e.stopPropagation()}
-      /> */}
-
-      {/* star */}
-      {/* <FaStar
-        className={`
-          mr-4 text-sm
-          ${email.starred ? "text-yellow-400" : "text-gray-400"}
-          hover:text-yellow-400
-        `}
-        onClick={(e) => e.stopPropagation()}
-      /> */}
 
       {/* sender */}
       <div
@@ -50,7 +48,6 @@ export default function EmailRow({ email, onClick }: Props) {
 
       {/* subject */}
       <div className="flex-1 truncate">
-
         <span
           className={`
             mr-2
@@ -63,7 +60,6 @@ export default function EmailRow({ email, onClick }: Props) {
         <span className="text-gray-400">
           - {email.body.slice(0, 60)}
         </span>
-
       </div>
 
       {/* right */}
@@ -75,23 +71,12 @@ export default function EmailRow({ email, onClick }: Props) {
 
         <div className="hidden group-hover:flex gap-3 text-gray-500">
 
-          {/* <MdArchive
-            onClick={(e) => e.stopPropagation()}
-            className="hover:text-black"
-          /> */}
-
           <MdDelete
-            onClick={(e) => e.stopPropagation()}
-            className="hover:text-red-500"
+            onClick={handleDelete}   
+            className="hover:text-red-500 cursor-pointer"
           />
 
-          {/* <MdMarkEmailRead
-            onClick={(e) => e.stopPropagation()}
-            className="hover:text-blue-500"
-          /> */}
-
         </div>
-
       </div>
     </div>
   );

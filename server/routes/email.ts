@@ -8,7 +8,8 @@ email.get("/:address", async (c) => {
   try {
     const address = c.req.param("address");
     const emails = await Email.find({ 
-      to: { $regex: new RegExp(`^${address}$`, 'i') } 
+      to: { $regex: new RegExp(`^${address}$`, 'i') } ,
+deletedByReceiver: false 
     }).sort({ createdAt: -1 });
 
     return c.json(emails);

@@ -104,6 +104,7 @@ export async function getSentEmails(userEmail: string) {
   return data;
 }
 
+
 export async function deleteEmail(emailId: string, userEmail: string) {
   const res = await fetch(`${BASE}/mailbox/delete-email`, {
     method: "DELETE",
@@ -122,4 +123,3 @@ export async function deleteEmail(emailId: string, userEmail: string) {
 
   return data;
 }
-
