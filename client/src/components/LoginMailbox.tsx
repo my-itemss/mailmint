@@ -35,7 +35,6 @@ function FloatingInput({ type, value, onChange, label }: FloatingInputProps) {
         {label}
       </label>
 
-      {/* Input Field */}
       <input
         type={type}
         value={value}

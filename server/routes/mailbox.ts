@@ -67,27 +67,6 @@ mailbox.post("/login", async (c) => {
   });
 });
 
-// mailbox.delete("/delete", async (c) => {
-//   const body = await c.req.json().catch(() => ({}));
-//   const { email, password } = body;
-  
-//   if (!email || !password) {
-//     return c.json({ error: "Email and password required" }, 400);
-//   }
-
-//   const mailboxDoc = await Mailbox.findOne({ email });
-  
-//   if (!mailboxDoc || !(await bcrypt.compare(password, mailboxDoc.password))) {
-//     return c.json({ error: "Invalid credentials" }, 401);
-//   }
-
-//   await Email.deleteMany({ to: email });
-//   await Mailbox.deleteOne({ email });
-
-//   return c.json({ success: true, message: "Mailbox and all emails deleted" });
-// });
-
-
 mailbox.delete("/delete-email", async (c) => {
   const body = await c.req.json().catch(() => ({}));
   const { emailId, userEmail } = body;

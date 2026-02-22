@@ -16,7 +16,7 @@ export default function Topbar({
   onToggleSidebar,
 }: TopbarProps) {
   const [open, setOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false); // Track loading state
+  const [isDeleting, setIsDeleting] = useState(false); 
   const ref = useRef<HTMLDivElement>(null);
 
   const name = displayName || email?.split("@")[0] || "U";
@@ -36,7 +36,7 @@ export default function Topbar({
       setIsDeleting(true);
       await deleteWholeUser(email, password);
       alert("Account deleted successfully.");
-      onLogout(); // Log out after deletion
+      onLogout();
     } catch (error: any) {
       alert(error.message || "Failed to delete user");
     } finally {
@@ -65,7 +65,7 @@ export default function Topbar({
         <p className="text-xl font-semibold">Mailmint</p>
       </div>
 
-      {/* SEARCH SECTION */}
+  
       <div className="flex-1 max-w-[720px]">
         <div className="flex items-center gap-3 bg-[#eaf1fb] px-4 py-3 rounded-full hover:shadow-sm transition">
           <IoSearchOutline size={20} className="text-gray-600" />
@@ -73,7 +73,7 @@ export default function Topbar({
         </div>
       </div>
 
-      {/* AVATAR & DROPDOWN */}
+    
       <div ref={ref} className="relative">
         <div onClick={() => setOpen(!open)} className="flex items-center gap-2 cursor-pointer">
           <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-medium shadow-sm hover:opacity-90 transition">

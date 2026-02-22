@@ -7,8 +7,8 @@ import { deleteEmail } from "../../lib/api";
 interface Props {
   email: Email;
   onClick: () => void;
-  userEmail: string;                       // ADD
-  onDeleted: (id: string) => void;         // ADD (remove from UI)
+  userEmail: string;                     
+  onDeleted: (id: string) => void;       
 }
 
 export default function EmailRow({ email, onClick, userEmail, onDeleted }: Props) {
@@ -36,7 +36,6 @@ export default function EmailRow({ email, onClick, userEmail, onDeleted }: Props
       "
     >
 
-      {/* sender */}
       <div
         className={`
           w-[220px] truncate
@@ -46,7 +45,6 @@ export default function EmailRow({ email, onClick, userEmail, onDeleted }: Props
         {email.from}
       </div>
 
-      {/* subject */}
       <div className="flex-1 truncate">
         <span
           className={`
@@ -62,7 +60,6 @@ export default function EmailRow({ email, onClick, userEmail, onDeleted }: Props
         </span>
       </div>
 
-      {/* right */}
       <div className="flex items-center gap-3 ml-10">
 
         <span className="text-sm text-gray-500 group-hover:hidden">

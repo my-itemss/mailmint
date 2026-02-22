@@ -1,11 +1,5 @@
 import { BiSend, BiPencil } from "react-icons/bi";
-import {
-  IoStarOutline,
-  IoTimeOutline,
-  IoDocumentOutline,
-  IoChevronDownOutline,
-} from "react-icons/io5";
-import { MdInbox, MdOutlineShoppingBag } from "react-icons/md";
+import { MdInbox } from "react-icons/md";
 
 interface SidebarProps {
   onCompose: () => void;
