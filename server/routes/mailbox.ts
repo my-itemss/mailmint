@@ -67,6 +67,25 @@ mailbox.post("/login", async (c) => {
   });
 });
 
+
+mailbox.delete("/delete", async (c) => {
+  const { email } = await c.req.json();
+
+  if (!email) {
+    return c.json({ success: false, error: "Missing email" }, 400);
+  }
+
+  await Mailbox.deleteOne({ email });
+
+  // also delete all emails of that user
+  await Email.deleteMany({
+    $or: [{ from: email }, { to: email }],
+  });
+
+  return c.json({ success: true });
+});
+
+
 mailbox.delete("/delete-email", async (c) => {
   const body = await c.req.json().catch(() => ({}));
   const { emailId, userEmail } = body;
