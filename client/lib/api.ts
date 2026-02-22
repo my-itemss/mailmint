@@ -90,3 +90,36 @@ export async function deleteWholeUser(email: string, password: string) {
   if (!res.ok) throw new Error(data.error || "Failed to delete user account");
   return data; 
 }
+
+
+export async function getSentEmails(userEmail: string) {
+  const res = await fetch(`${BASE}/emails/sent/${userEmail}`);
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data?.error || "Failed to fetch sent mails");
+  }
+
+  return data;
+}
+
+export async function deleteEmail(emailId: string, userEmail: string) {
+  const res = await fetch(`${BASE}/mailbox/delete-email`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      emailId,
+      userEmail,
+    }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data?.error || "Failed to delete email");
+  }
+
+  return data;
+}
+

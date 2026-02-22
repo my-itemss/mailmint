@@ -22,21 +22,21 @@ export default function EmailRow({ email, onClick }: Props) {
       "
     >
       {/* checkbox */}
-      <input
+      {/* <input
         type="checkbox"
         className="mr-4"
         onClick={(e) => e.stopPropagation()}
-      />
+      /> */}
 
       {/* star */}
-      <FaStar
+      {/* <FaStar
         className={`
           mr-4 text-sm
           ${email.starred ? "text-yellow-400" : "text-gray-400"}
           hover:text-yellow-400
         `}
         onClick={(e) => e.stopPropagation()}
-      />
+      /> */}
 
       {/* sender */}
       <div
@@ -67,7 +67,7 @@ export default function EmailRow({ email, onClick }: Props) {
       </div>
 
       {/* right */}
-      <div className="flex items-center gap-3 ml-4">
+      <div className="flex items-center gap-3 ml-10">
 
         <span className="text-sm text-gray-500 group-hover:hidden">
           {date}
@@ -75,20 +75,20 @@ export default function EmailRow({ email, onClick }: Props) {
 
         <div className="hidden group-hover:flex gap-3 text-gray-500">
 
-          <MdArchive
+          {/* <MdArchive
             onClick={(e) => e.stopPropagation()}
             className="hover:text-black"
-          />
+          /> */}
 
           <MdDelete
             onClick={(e) => e.stopPropagation()}
             className="hover:text-red-500"
           />
 
-          <MdMarkEmailRead
+          {/* <MdMarkEmailRead
             onClick={(e) => e.stopPropagation()}
             className="hover:text-blue-500"
-          />
+          /> */}
 
         </div>
 

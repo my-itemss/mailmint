@@ -7,6 +7,16 @@ const emailSchema = new mongoose.Schema(
     subject: String,
     body: String,
 
+    deletedBySender: {
+      type: Boolean,
+      default: false,
+    },
+
+    deletedByReceiver: {
+      type: Boolean,
+      default: false,
+    },
+
     starred: {
       type: Boolean,
       default: false,
@@ -18,8 +28,8 @@ const emailSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, 
-  }
+    timestamps: true,
+  },
 );
 
 export default mongoose.model("Email", emailSchema);

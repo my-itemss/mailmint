@@ -53,3 +53,11 @@
 .sans{
   font-family:Sans,sans-serif;
 }
+
+@font-face {
+  font-family:Oneee;
+  src: url(/client/public/fonts/1b99372b3eaef0c8-s.p.758e15a8.woff2);
+}
+.oneee{
+  font-family:Oneee,sans-serif;
+}

@@ -18,6 +18,21 @@ email.get("/:address", async (c) => {
   }
 });
 
+/* GET sent mails */
+email.get("/sent/:address", async (c) => {
+  try {
+    const address = c.req.param("address");
+
+    const emails = await Email.find({
+      from: { $regex: new RegExp(`^${address}$`, "i") },
+      deletedBySender: false,
+    }).sort({ createdAt: -1 });
+
+    return c.json(emails);
+  } catch (err) {
+    return c.json({ error: "Failed to load sent mails" }, 500);
+  }
+});
 
 email.post("/send", async (c) => {
   try {

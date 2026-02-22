@@ -86,7 +86,7 @@ export default function LoginMailbox({ onLogin }: Props) {
         type="email"
         value={email}
         onChange={setEmail}
-        label="Email or phone"
+        label="Email Address"
       />
 
       <FloatingInput

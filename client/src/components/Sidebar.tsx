@@ -17,12 +17,12 @@ interface SidebarProps {
 export default function Sidebar({ onCompose, collapsed, activeItem, setActiveItem }: SidebarProps) {
   const menuItems = [
     { name: "Inbox", icon: <MdInbox size={20} /> },
-    { name: "Starred", icon: <IoStarOutline size={20} /> },
-    { name: "Snoozed", icon: <IoTimeOutline size={20} /> },
+//    { name: "Starred", icon: <IoStarOutline size={20} /> },
+//    { name: "Snoozed", icon: <IoTimeOutline size={20} /> },
     { name: "Sent", icon: <BiSend size={20} /> },
-    { name: "Drafts", icon: <IoDocumentOutline size={20} /> },
-    { name: "Purchases", icon: <MdOutlineShoppingBag size={20} /> },
-    { name: "More", icon: <IoChevronDownOutline size={20} /> },
+//    { name: "Drafts", icon: <IoDocumentOutline size={20} /> },
+//   { name: "Purchases", icon: <MdOutlineShoppingBag size={20} /> },
+//    { name: "More", icon: <IoChevronDownOutline size={20} /> },
   ];
 
   return (
