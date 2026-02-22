@@ -7,6 +7,7 @@ import EmailViewer from "./EmailViewer";
 export interface Email {
   _id: string;
   to: string;
+  from: string;
   subject: string;
   body: string;
   createdAt: string;
@@ -24,12 +25,8 @@ export default function SentEmailList({ emails }: Props) {
   return (
     <div className="flex-1 overflow-hidden">
       <div className="h-full bg-white rounded-l-2xl overflow-hidden flex flex-col">
-
         {selected ? (
-          <EmailViewer
-            email={selected}
-            onBack={() => setSelected(null)}
-          />
+          <EmailViewer email={selected} onBack={() => setSelected(null)} />
         ) : (
           <>
             {/* Toolbar */}
