@@ -12,3 +12,4 @@ users can create their mail ids and then send mails to their friends and family 
  - for server run "bun run dev"
  - and then you go ...
 
+plssss oncee plss 
